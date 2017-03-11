@@ -1,0 +1,9 @@
+---
+# vars file for ec2_provision
+
+image: <image> 
+instance_type: <instance_type>
+keypair: <keypair>
+security_group: <security_group>
+region: <region>
+subnet: <subnet>

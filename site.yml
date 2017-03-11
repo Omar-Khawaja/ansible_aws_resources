@@ -1,0 +1,15 @@
+---
+
+- name: Provision AWS infrastructure
+  hosts: local
+  connection: local
+
+  roles:
+    - ec2_provision
+
+- name: Install httpd on newly created instances
+  hosts: newly_created 
+  remote_user: root
+
+  roles:
+    - install_httpd

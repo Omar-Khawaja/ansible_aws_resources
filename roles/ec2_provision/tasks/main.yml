@@ -1,0 +1,30 @@
+---
+# tasks file for ec2_provision
+
+- name: create ec2 instance
+  ec2:
+    key_name: "{{ keypair }}"
+    instance_type: "{{ instance_type }}"
+    image: "{{ image }}"
+    group: "{{ security_group }}"
+    assign_public_ip: yes   
+    region: "{{ region }}"
+    vpc_subnet_id: "{{ subnet }}"
+    count: 3
+  register: new_nodes
+
+- name: add newly created instances to newly_created group
+  add_host:
+    name: "{{ item.private_ip }}"
+    group: newly_created
+  with_items: "{{ new_nodes.instances }}"
+
+- name: Wait for SSH to come up
+  wait_for:
+    host: "{{ item.private_ip }}"
+    port: 22
+    delay: 20
+    timeout: 90
+    state: started
+  with_items: "{{ new_nodes.instances }}"
+

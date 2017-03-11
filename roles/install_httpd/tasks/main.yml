@@ -1,0 +1,8 @@
+---
+# tasks file for install_httpd
+
+- name: Install httpd
+  yum: name=httpd state=installed
+
+- name: Started and enable httpd
+  service: name=httpd state=started enabled=yes
